@@ -2,7 +2,12 @@ fetch("https://api.unsplash.com/photos/random", {
     headers: new Headers({ "Authorization": "Client-ID abce20a199d980e0a73bddb125bda9bae3e57b2dcb8c2a973177a25414e8076d" })
 }).then(res => {
     res.json().then(j => {
-        document.body.style.backgroundImage = "url(" + j.urls.regular + ")"
+        let img = new Image();
+        img.addEventListener('load', e => {
+            document.body.style.backgroundImage = "url(" + e.target.src + ")";
+            document.getElementById("bumpme").style.display = "block";
+        });
+        img.src = j.urls.regular;
     }).catch(e => {
         console.log(e);
     });
@@ -47,4 +52,4 @@ function accelerationHandler(acceleration) {
 document.getElementById("bump").onclick = function(e) {
     document.getElementById("bump").style.display = "none";
     document.getElementById("bumpme").style.display = "block";
-}
+};
