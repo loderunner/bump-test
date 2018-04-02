@@ -1,19 +1,37 @@
-fetch("https://api.unsplash.com/photos/random", {
+fetch("https://api.unsplash.com/photos/random?query=background", {
     headers: new Headers({ "Authorization": "Client-ID abce20a199d980e0a73bddb125bda9bae3e57b2dcb8c2a973177a25414e8076d" })
 }).then(res => {
-    res.json().then(j => {
-        let img = new Image();
-        img.addEventListener('load', e => {
-            document.body.style.backgroundImage = "url(" + e.target.src + ")";
-            document.getElementById("bumpme").style.display = "block";
+    if (res.ok) {
+        res.json().then(j => {
+            setImage(j);
+        }).catch(e => {
+            console.log(e);
         });
-        img.src = j.urls.regular;
-    }).catch(e => {
-        console.log(e);
-    });
+    } else {
+        document.getElementById("bumpme").style.display = "block";
+    }
 }).catch(e => {
     console.log(e)
 });
+
+function setImage(j) {
+    let img = new Image();
+    img.addEventListener('load', e => {
+        document.getElementById("unsplash-notice").innerHTML =
+            '<a href="' +
+            j.links.html + "?utm_source=bump_test&utm_medium=referral" +
+            '">Photo</a> by <a href="' +
+            j.user.links.html + "?utm_source=bump_test&utm_medium=referral" +
+            '">' +
+            j.user.name +
+            '</a> on <a href="' +
+            "https://unsplash.com?utm_source=bump_test&utm_medium=referral" +
+            '">Unsplash</a>'
+        document.body.style.backgroundImage = "url(" + e.target.src + ")";
+        document.getElementById("bumpme").style.display = "block";
+    });
+    img.src = j.urls.regular;
+}
 
 if ("LinearAccelerationSensor" in window) {
     let accelerometer = new LinearAccelerationSensor();
