@@ -1,3 +1,15 @@
+fetch("https://api.unsplash.com/photos/random", {
+    headers: new Headers({ "Authorization": "Client-ID abce20a199d980e0a73bddb125bda9bae3e57b2dcb8c2a973177a25414e8076d" })
+}).then(res => {
+    res.json().then(j => {
+        document.body.style.backgroundImage = "url(" + j.urls.regular + ")"
+    }).catch(e => {
+        console.log(e);
+    });
+}).catch(e => {
+    console.log(e)
+});
+
 if ("LinearAccelerationSensor" in window) {
     let accelerometer = new LinearAccelerationSensor();
     accelerometer.addEventListener(
@@ -10,7 +22,7 @@ if ("LinearAccelerationSensor" in window) {
     accelerometer.start();
 } else if ("DeviceMotionEvent" in window) {
 
-    window.ondevicemotion =  function(eventData) {
+    window.ondevicemotion = function(eventData) {
         accelerationHandler(eventData.acceleration);
     };
 } else {
@@ -33,6 +45,6 @@ function accelerationHandler(acceleration) {
 }
 
 document.getElementById("bump").onclick = function(e) {
-        document.getElementById("bump").style.display = "none";
-        document.getElementById("bumpme").style.display = "block";
+    document.getElementById("bump").style.display = "none";
+    document.getElementById("bumpme").style.display = "block";
 }
